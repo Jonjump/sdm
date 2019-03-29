@@ -1,0 +1,3 @@
+Customer Email,Quantity,Interval,Amount,Status
+monthly@dummy.com,1,month,£50.00,active
+annual@dummy.com,1,year,£50.00,active

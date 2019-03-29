@@ -1,0 +1,45 @@
+{% extends "_layout.html" %}
+{% block title %}SDM{% endblock %}
+{% block content %}
+
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12 text-center py-5">
+        <h1 style="text-align:center;">SDM : Spiky Donor Management</h1>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-4 text-center">
+        <a class="btn btn-secondary m-3" href="/donations" role="button"><h3> 1. donations</h3></a>
+      </div>
+      <div class="col-md-4 text-center">
+        <a class="btn btn-secondary m-3" href="/benefits" role="button"><h3>2. benefits</h3></a>
+      </div>
+      <div class="col-md-4 text-center">
+        <a class="btn btn-secondary m-3" href="/reports" role="button"><h3>3. reports</h3></a>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-4 text-center">
+        Donations are recorded by the payment provider.  You load the information they give you into SDM, and manage ALL the donations in one place.</p>
+      </div>
+      <div class="col-md-4 text-center">
+        <p>Benefits are the different levels you set for donors - "£10 per month for 6 months", or "a single donation of at least £50 in the last six months"</p>
+      </div>
+      <div class="col-md-4 text-center">
+        <p>Summary data for number and amount of donations is provided in a spreadsheet.</p>
+      </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 text-center text-white py-3 mt-5 bg-info">
+          <h2>What's the point?</h2>
+        </div>
+        <div class="col-md-12 pl-5 mt-3">
+            <h5><b>Freedom: </b>Use multiple payment platforms to receive donations</h5>
+            <h5><b>Trust: </b>Fulfil your promises by delivering the benefits you promised to each donor</h5>
+            <h5><b>Efficiency: </b>Reporting so you can see what works, and what doesn't</h5>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

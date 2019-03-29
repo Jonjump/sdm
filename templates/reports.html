@@ -1,0 +1,19 @@
+{% extends "_layout.html" %}
+{% block title %}Reports{% endblock %}
+{% block content %}
+  <form method="GET" action="/reports/download">
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <label for="startDate">Start Date</label>
+        <input id="startDate"  name="startDate" required type="date" class="form-control" value="{{form['startDate']}}">
+      </div>
+      <div class="form-group col-md-6">
+        <label for="endDate">End Date</label>
+        <input  id="endDate" name="endDate" required type="date" class="form-control" value="{{form['endDate']}}">
+      </div>
+    </div>
+    <div class="form-row">
+        <input type="submit" name="action" value="Get Report" class="btn btn-primary">
+    </div>
+  </form>
+{% endblock %}

@@ -1,0 +1,11 @@
+{% extends "benefits/cards.html" %}
+{% block title %}Benefits{% endblock %}
+{% block beforeCards %}
+{% if benefits|length>0 %}
+  <h1>Benefits Awaiting Delivery</h1>
+{% else %}
+  <h2>
+    No benefits are awaiting delivery
+  </h2>
+{% endif %}
+{% endblock %}

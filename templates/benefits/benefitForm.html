@@ -1,0 +1,116 @@
+{% extends "_layout.html" %}
+{% block title %}Benefits{% endblock %}
+{% block content %}
+  <h1>Benefit</h1>
+  {% if action == "add" %}
+    <form method="POST" action="{{url_for("addBenefit")}}" >
+  {% else %}
+    <form method="POST" action="{{url_for("updateBenefit", storeId=form["storeId"])}}">
+  {% endif %}
+    <input name="storeId" id="storeId" type="hidden" value="{{form["storeId"]}}" />
+
+    <div class="form-row">
+      <div class="form-group col-md-12">
+        <label for="type">Benefit Type</label>
+
+        {% if form["status"]=="DELIVERED" or form["status"] == "PENDING" %}
+          <input disabled id="type" name="type" value="{{ form["type"] }}"/>
+          <select hidden id="type" name="type" required class="form-control" value="{{form["type"]}}" onchange="showBenefitType()">
+            {% for x in benefitTypes %}
+              <option value={{ x.value }} {{'selected' if 'type' in form and form['type'] == x.value }}>{{ x.name.lower().capitalize() }}</option>
+            {% endfor %}
+          </select>
+        {% else %}
+          <select  id="type" name="type" required class="form-control" value="{{form["type"]}}" onchange="showBenefitType()">
+            {% for x in benefitTypes %}
+              <option value={{ x.value }} {{'selected' if 'type' in form and form['type'] == x.value }}>{{ x.name.lower().capitalize() }}</option>
+            {% endfor %}
+          </select>
+        {% endif %}
+
+      </div>
+    </div>
+
+    <div class=form-row>
+      <div class="col-md-12 text-left font-weight-bold py-5 pl-5">
+
+        <span id="typeAmount" class="benefitType">
+          We give you
+          <input {% if form["status"]=="DELIVERED" or form["status"] == "PENDING" %} readonly {% endif %} title="this is the reward that the donor gets" placeholder="describe the reward" id="reward-Amount" class="text-center" name="reward-Amount" size="10" type="text" class="text-center" value="{{form["reward"]}}"><br/>
+          if you donate at least 
+          <input  {% if form["status"]=="DELIVERED" or form["status"] == "PENDING" %} readonly {% endif %} id="minAmount-Amount" name="minAmount-Amount" type="text" size="5" class="text-center" placeholder="£???" value="{{form["minAmount"]}}"><br/>
+        </span>
+
+        <span id="typeAmountPerMonth" class="benefitType">
+          We give you 
+          <input {% if form["status"]=="DELIVERED" or form["status"] == "PENDING" %} readonly {% endif %} title="this is the reward that the donor gets" placeholder="describe the reward" id="reward-AmountPerMonth" class="text-center" name="reward-AmountPerMonth"  size="10" type="text" class="text-center" value="{{form["reward"]}}">
+          if you donate at least 
+          <input  {% if form["status"]=="DELIVERED" or form["status"] == "PENDING" %} readonly {% endif %}id="minAmount-AmountPerMonth" name="minAmount-AmountPerMonth" type="text" size="5" class="text-center" placeholder="£???" value="{{form["minAmount"]}}">
+          a month
+        </span>
+    
+        <span id="typeNewDonor" class="benefitType">
+          New donors get
+          <input {% if form["status"]=="DELIVERED" or form["status"] == "PENDING" %} readonly {% endif %} title="this is the reward that the donor gets" placeholder="describe the reward" id="reward-NewDonor" class="text-center" name="reward-NewDonor" size="10" type="text" class="text-center" value="{{form["reward"]}}">
+          if they donate at least
+          <input {% if form["status"]=="DELIVERED" or form["status"] == "PENDING" %} readonly {% endif %} id="minAmount-NewDonor" name="minAmount-NewDonor" type="text" size="5" class="text-center" placeholder="£???" value="{{form["minAmount"]}}">
+        </span>
+
+        <span>
+          between
+          <input {% if form["status"]=="DELIVERED" or form["status"] == "PENDING" %} readonly {% endif %} id="startDate"  name="startDate" required type="date" class="text-center" value={{form["startDate"]}}>
+          and
+          <input {% if form["status"]=="DELIVERED" or form["status"] == "PENDING" %} readonly {% endif %}  id="endDate" name="endDate" required type="date" class="text-center" value={{form["endDate"]}}>
+        </span>
+      </div>
+    </div>
+
+
+    {% if messages %}
+      <div class="form-row">
+        <div class="text-center py-4">
+          {% for k,v in messages.items() %}
+            <h3 class="text-center py-3 pl-5 text-danger">{{v}}</h3>
+          {% endfor %}
+        </div>
+      </div>
+    {% endif %}
+
+
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <label>Delivery Method: </label>
+          {% if form["status"]=="DELIVERED" or form["status"] == "PENDING" %}
+            <input hidden name="delivery" id="delivery" value="{{form['delivery']}}"/>
+            <select disabled title="Online: can be done by email, offline: will require some other method" width="6" >
+              {% for x in deliveryTypes %}
+                <option value={{ x.value }} {{'selected' if 'delivery' in form and form['delivery']|int == x.value }}>{{ x.name.lower().capitalize() }}</option>
+              {% endfor %}
+            </select>
+          {% else %}
+            <select title="Online: can be done by email, offline: will require some other method" id="delivery" name="delivery" width="6" >
+              {% for x in deliveryTypes %}
+                <option value={{ x.value }} {{'selected' if 'delivery' in form and form['delivery']|int == x.value }}>{{ x.name.lower().capitalize() }}</option>
+              {% endfor %}
+            </select>
+          {% endif %}
+      </div>
+      <div class="form-group col-md-6">
+        <label>Delivery Completed: </label>
+        <input {% if form["status"]=="CURRENT" or form["status"] == "DELIVERED" %} readonly {% endif %}  title="tick this when the delivery has been done for all users" id="completed" name="completed" type="checkbox"   style="transform: scale(3);" {{'checked="checked"' if form["completed"] == "on" else ""}}/>
+      </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary">{{action}}</button>
+
+    <a href="{{url_for('getBenefits')}}"
+      <button class="btn">Cancel</button>
+    </a>
+
+  </form>
+
+  <script>
+    $().ready(showBenefitType)
+  </script>
+
+{% endblock %}

@@ -1,0 +1,67 @@
+{% extends "_layout.html" %}
+{% block title %}Donations By Week{% endblock %}
+{% block content %}
+  <h1 class="py-5 text-center">Donations in the System</h1>
+  {% for source in sources %}
+  {%if source not in summary %}
+    <h3 class="py-3">
+      No donations for {{source.name}} in system.   Press 
+            <a href={{ "/donations/upload?paymentProvider=" + source.name }}>
+              <button class="btn btn-primary">
+              <span class="oi oi-plus"></span>
+              </button>
+            </a>
+      to add them.
+    </h3>
+  {% else %}
+  <table class="table p-0 mb-5">
+    <thead class="bg-info text-white">
+        <tr>
+          <th class="p-2 text-center font-weight-bold" colspan="52" style="font-size:1.5em; border-bottom: 0">
+            {{ source.name }}
+          <th class="bg-info white text-center align-middle px-2 py-0" rowspan="3">
+            <a href={{ "/donations/upload?paymentProvider=" + source.name }}>
+              <button class="btn btn-primary">
+              <span class="oi oi-plus"></span>
+              </button>
+            </a>
+          </th>
+        </tr>
+        <tr class="bg-info text-white">
+          {% for wk in weekEnds %}
+          <th class="text-center p-0 bt-0" style="font-size:0.5em; width:0.1em; border-top:0; border-bottom:0">
+            {{ wk.strftime("%b")[0]}}
+          </th>
+          {% endfor %}
+       </tr>
+        <tr>
+          {% for wk in weekEnds %}
+          <th class="text-center bg-info text-white" style="font-size:0.5em; width:0.1em;padding:0px;border-top:0;">
+            {{ wk.strftime("%d")}}
+           </th>
+          {% endfor %}
+        </tr>
+    </thead>
+    <tbody>
+        {% for type in types %}
+        <tr>
+          {% for wk in weekEnds %}
+            {% if wk in summary[source] and type in summary[source][wk]%}
+              <td class="bg-success" style="width:0.1em;padding:0px">
+              </td>
+            {% else %}
+              <td class="bg-secondary" style="width:0.1em;padding:0px">
+              </td>
+            {% endif %}
+          {% endfor %}
+          <td class="text-capitalize px-2 text-center" style="width:0.1em;padding:0px">
+            {{ type.name.lower() }}
+          </td>
+      </tr>
+      {% endfor %}
+      </tr>
+    </tbody>
+  </table>
+  {% endif %}
+{% endfor %}
+{% endblock %}

@@ -1,0 +1,23 @@
+body {
+    font-family: Cardo, Georgia, "Times New Roman", serif;
+    font-size:1.173rem;
+}
+p {
+    line-height: 1.75em;
+    margin: 0 0 1em;
+}
+.btn {
+    border: 0;
+    color: #FFF;
+    cursor: pointer;
+    display: inline-block;
+    font-family: "Roboto Condensed", Arial, Helvetica, sans-serif;
+    font-size: 0.73em;
+    font-weight: 700;
+    height: auto;
+    line-height: 30px;
+    padding: 0.6em;
+    text-transform: uppercase;
+    background-color: #C92121;
+}
+.navbar { font-weight:700 }

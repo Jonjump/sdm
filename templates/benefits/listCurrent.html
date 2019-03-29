@@ -1,0 +1,19 @@
+{% extends "benefits/cards.html" %}
+{% block title %}Benefits{% endblock %}
+{% block beforeCards %}
+{% if benefits|length>0 %}
+  <h1>Current And Future Benefits</h1>
+{% else %}
+  <h2>
+    No Current or Future benefits defined.
+  </h2>
+  <h2 class="px-5 py-5">
+  Click to add one : 
+  <a href={{ "/benefits/add" }}>
+    <button class="btn btn-primary">
+    <span class="oi oi-plus"></span>
+    </button>
+  </a>
+  </h2>
+{% endif %}
+{% endblock %}

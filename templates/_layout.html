@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="{{ url_for('static', filename='blank-favicon.ico') }}" rel="shortcut icon" type="image/x-icon" />
+    {% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap-grid.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap-reboot.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='sdm.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='open-iconic/css/open-iconic-bootstrap.css') }}">
+    <title>{% block title %}NO PAGE TITLE{% endblock %}</title>
+    {% endblock %}
+    <script src="{{ url_for('static', filename='jquery-3.3.1.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='sdm.js') }}"></script>
+  </head>
+  <body>
+         <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+  <!-- <a class="navbar-brand" href="about">Home</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button> -->
+
+  <div class="collapse navbar-collapse" id="topBar">
+    <a href="/" class="navbar-brand">SDM:Home</a>
+    <ul class="navbar-nav mr-auto">
+      <!-- <li class="nav-item dropdown {{(active=='file' and 'active')}}">
+        <a class="nav-link dropdown-toggle" href="#" id="file" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">File</a>
+        <div class="dropdown-menu" aria-labelledby="file">
+          <a class="dropdown-item" href="/file/dump">Backup</a>
+          <a class="dropdown-item" href="/file/exit">Exit</a>
+        </div>
+      </li> -->
+      <li class="nav-item {{(active=='donations' and 'active')}}">
+         <a class="nav-link" href="/donations/index">Donations</a>
+      </li>
+      <li class="nav-item dropdown {{(active=='benefits' and 'active')}}">
+        <a class="nav-link dropdown-toggle" href="#" id="benefits" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Benefits</a>
+        <div class="dropdown-menu" aria-labelledby="benefits">
+          <a class="dropdown-item" href="/benefits?status=current">Current & Future</a>
+          <a class="dropdown-item" href="/benefits?status=pending">Awaiting Delivery</a>
+          <a class="dropdown-item" href="/benefits?status=delivered">Delivered</a>
+          <a class="dropdown-item" href="{{url_for("benefitsAdd")}}">Create a new benefit</a>
+      </li>
+      <li class="nav-item {{(active=='reports' and 'active')}}">
+          <a class="nav-link" href="/reports">Reports</a>
+      </li>
+    </ul>
+    {% if session['user_email'] %}
+      <div>
+        <a class="nav-link" href="/logout">Logout</a>
+      </div>
+    {% endif %}
+    <!-- <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
+      <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
+    </form> -->
+  </div>
+</nav>
+<main role="main" class="container" style="padding-top:5em; ">
+    {% block content %}{% endblock %}
+</main>
+    <div id="footer" class="text-right mt-5 pt-5 px-3">
+      {% block footer %}
+        <hr>
+          <small>
+            Built by <a href="https://github.com/Jonjump">jonjump</a> for <a href="www.spiked-onine.com">Spiked</a>, using tools which are gratis and libre.
+          </small>
+          <!-- {% for key, value in session.items() %}
+            <dt>{{ key }}</dt>
+            <dd>{{ value }}</dd>
+          {% endfor %} -->
+      {% endblock %}
+    </div>
+  </body>
+</html>

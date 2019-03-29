@@ -1,0 +1,36 @@
+{% extends "_layout.html" %}
+{% block content %}
+  {% block beforeCards %}{% endblock %}
+  <div class="card-group">
+
+  {% for benefit in benefits %}
+    <div class="card m-2" style="max-width: 72rem;">
+      <div class="card-body">
+        {%if benefit.status.name != "DELIVERED" %}
+        <a class="float-right" href={{ url_for("updateBenefit",storeId=benefit._storeId) }}>
+          <button class="btn btn-primary">
+          <span class="oi oi-pencil"></span>
+          </button>
+        </a>
+        {% endif %}
+        <h6 class="card-title">{{benefit.type.name}}</h6>
+        <h6 class="card-subtitle mb-2 text-muted">Delivered {{benefit.delivery.name|lower}}</h6>
+        <p class="card-text">{{benefit.text}}</p>
+        {%if benefit.status.name != "CURRENT" %}
+        <a class="card-link" href="{{ url_for('getQualifyingDonors', storeId=benefit._storeId) }}">
+          <button class="btn btn-primary">
+          <span class="oi oi-data-transfer-download"></span>
+          </button>
+        </a>
+        {% endif %}
+        {% if benefit.status.name != "PENDING" %}
+          <a class="float-right">
+              <button class="btn btn-primary float-right" onclick="confirmModal('delete this Benefit?',deleteBenefit,{{benefit._storeId}});">
+              <span class="oi oi-trash"></span>
+          </a>
+        {% endif %}
+      </div>
+    </div>
+  {% endfor %}
+  </div>
+{% endblock %}
