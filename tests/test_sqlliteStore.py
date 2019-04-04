@@ -440,3 +440,29 @@ class TestStoreSqlLite(unittest.TestCase):
         donors = s.getQualifyingDonors(benefit)
         self.assertEqual(len(donors), 0)
 
+    def test_getDetailDonors_getsFirstAndLastDate(self):
+        s = self.getStore()
+        s.insertDonation(Donation(
+                PaymentProvider.GOCARDLESS,
+                "1",
+                "newDonor@test.com",
+                date(1990, 1, 1),
+                DonationType.ONEOFF,
+                Money.fromString('£10')
+            )
+        )
+        s.insertDonation(Donation(
+                PaymentProvider.GOCARDLESS,
+                "2",
+                "newDonor@test.com",
+                date(1990, 2, 3),
+                DonationType.ONEOFF,
+                Money.fromString('£10')
+            )
+        )
+        details = s.getDetailDonors()
+        self.assertEqual(len(details), 1)
+        self.assertEqual(details[0].donor, "newDonor@test.com")
+        self.assertEqual(details[0].firstPaymentDate, date(1990, 1, 1))
+        self.assertEqual(details[0].lastPaymentDate, date(1990, 2, 3))
+

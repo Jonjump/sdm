@@ -3,7 +3,7 @@ from datetime import datetime
 from dataclasses import dataclass
 from enum import Enum
 from abc import ABC, abstractmethod
-from domain import Donor, Donation, Benefit, PaymentId, PaymentProvider
+from domain import Donor, Donation, Benefit, PaymentId, PaymentProvider, DonorDetail
 
 
 class StoreException(Exception):
@@ -85,6 +85,10 @@ class Store(ABC):
 
     @abstractmethod
     def getQualifyingDonors(self, benefit: Benefit) -> List[Donor]:
+        pass
+
+    @abstractmethod
+    def getDetailDonors(self) -> List[DonorDetail]:
         pass
 
     @abstractmethod

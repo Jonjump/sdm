@@ -1,7 +1,7 @@
 from typing import List
 from sqlite3 import dbapi2 as sqlite, OperationalError
 from datetime import date, datetime
-from domain import Benefit, Donor, Donation, DonationType, Money, Delivery, Currency, PaymentProvider, rndDate, BenefitType
+from domain import Benefit, Donor, Donation, DonationType, Money, Delivery, Currency, PaymentProvider, rndDate, BenefitType, DonorDetail
 from .store import Store, StoreType, StoreConfig, StoreDuplicate, StoreNotFound
 
 
@@ -154,6 +154,14 @@ def parseDate(dbValue):
         return None
 
 
+def donorDetailFromRow(row):
+    return DonorDetail(
+        donor=row[0],
+        firstPaymentDate=parseDate(row[1]),
+        lastPaymentDate=parseDate(row[2])
+    )
+
+
 def donationFromRow(row):
     return Donation(
         source=PaymentProvider[row[0]],
@@ -272,6 +280,28 @@ class StoreSqlLite(Store):
         cmd, args = getQualifyingQuery(benefit)
         rows = self._connection.cursor().execute(cmd, args).fetchall()
         return [row[0] for row in rows]
+
+    def getDetailDonors(self) -> List[DonorDetail]:
+        cmd = """
+SELECT first.donor, firstDate, lastDate
+FROM (
+    SELECT donor,date as firstDate
+    FROM donations
+    GROUP BY DONOR
+    HAVING MIN(ROWID)
+    ORDER BY date
+) first
+JOIN (
+    SELECT donor,date as lastDate
+    FROM donations
+    GROUP BY DONOR
+    HAVING MAX(ROWID)
+    ORDER BY date
+) last
+ON first.donor=last.donor
+"""
+        rows = self._connection.cursor().execute(cmd).fetchall()
+        return [donorDetailFromRow(row) for row in rows]
 
     def setupStore(self):
         cursor = self._connection.cursor()

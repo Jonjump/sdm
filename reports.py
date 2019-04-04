@@ -29,6 +29,9 @@ def getDonationsReport(store, startDate, endDate):
     addRevenuesByWeek(workbook, formats, weekEnds, donations)
     addDonationsByWeek(workbook, formats, weekEnds, donations)
 
+    # details = store.getDetailDonors()
+    # addNewDonorsByMonth(workbook, formats, monthEnds, details)
+
     workbook.close()
     output.seek(0)
     return output
