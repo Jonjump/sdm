@@ -2,6 +2,8 @@
 *.db-journal
 client_secrets.json
 config.py
+# dev environments
+.vscode
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
