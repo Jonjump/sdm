@@ -8,6 +8,7 @@ from domain import BenefitType, Delivery, Money, Benefit, BenefitException, rndD
 from domain import PaymentProvider, DonationType
 from infrastructure import StoreFactory, StoreConfig, StoreType, StoreDuplicate, TransactionImporterFactory
 from reports import getDonationsReport
+from chardet.universaldetector import UniversalDetector
 import config
 
 BASE_URI = f"https://{config.HOST}:{config.PORT}"
@@ -17,7 +18,7 @@ app.config.update({
     'SECRET_KEY': config.APPSECRETKEY,
     'TESTING': not config.PRODUCTION,
     'DEBUG': not config.PRODUCTION,
-    'OIDC_CLIENT_SECRETS': 'client_secrets.json',
+    'OIDC_CLIENT_SECRETS': config.CLIENT_SECRETS,
     'OIDC_ID_TOKEN_COOKIE_SECURE': config.PRODUCTION,
     'OIDC_REQUIRE_VERIFIED_EMAIL': False,
     'OIDC_GOOGLE_APPS_DOMAIN': config.OIDC_GOOGLE_APPS_DOMAIN,
@@ -171,7 +172,8 @@ def donationsUpload():
         # bug in spooledTemporaryFile - AttributeError: 'SpooledTemporaryFile' object has no attribute 'readable'
         # textWrapper=io.TextIOWrapper(file.stream,encoding='utf-8',write_through=True)
         # workaround
-        textWrapper = StringIO(file.read().decode("latin-1"))
+        encoding = getEncoding(file)
+        textWrapper = StringIO(file.read().decode(encoding))
 
         donations = []
         importer = TransactionImporterFactory(paymentProvider, textWrapper)
@@ -205,13 +207,6 @@ def donationsByWeek(item='byWeek'):
     donations = store.getDonations(startDate, endDate)
     summary = Summary(donations, [SummaryFields.SOURCE, SummaryFields.WEEK, SummaryFields.TYPE])
     return render_template('donations/'+item+'.html', active="donations", weekEnds=weekEnds, summary=summary, sources=PaymentProvider, types=DonationType)
-
-
-# @app.route('/file/<item>')
-# @app.route('/file')
-# @require_login
-# def file(item='index'):
-#     return render_template('file/'+item+'.html', active="file")
 
 
 @app.route('/reports/download')
@@ -308,3 +303,15 @@ def checkFileAllowed(filename):
         raise Exception("no . in filename")
     if filename.rsplit('.', 1)[1].lower() != "csv":
         raise Exception("extension must be csv")
+
+
+def getEncoding(file):
+    originalPosition = file.tell()
+    detector = UniversalDetector()
+    for line in file.readlines():
+        detector.feed(line)
+        if detector.done:
+            break
+    detector.close()
+    file.seek(originalPosition)
+    return detector.result["encoding"].lower()

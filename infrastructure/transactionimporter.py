@@ -70,7 +70,7 @@ class TransactionImporter(ABC):
 
 class GocardlessTransactionImporter (TransactionImporter):
     SOURCE = PaymentProvider.GOCARDLESS
-    HEADER = 'id,created_at,charge_date,amount,description,currency,status,amount_refunded,reference,transaction_fee,payout_date,app_fee,links.mandate,links.creditor,links.customer,links.payout,links.subscription,customers.id,customers.created_at,customers.email,customers.given_name,customers.family_name,customers.company_name,customers.address_line1,customers.address_line2,customers.address_line3,customers.city,customers.region,customers.postal_code,customers.country_code,customers.language,customers.swedish_identity_number,customers.active_mandates\n'
+    HEADER = 'id,created_at,charge_date,amount,description,currency,status,amount_refunded,reference,transaction_fee,payout_date,app_fee,links.mandate,links.creditor,links.customer,links.payout,links.subscription,customers.id,customers.created_at,customers.email,customers.given_name,customers.family_name,customers.company_name,customers.address_line1,customers.address_line2,customers.address_line3,customers.city,customers.region,customers.postal_code,customers.country_code,customers.language,customers.swedish_identity_number,customers.active_mandates\n'  # noqa: E501
     CSVCONFIG = CsvConfig(
         delimiter=',',
         doublequote=True,
@@ -99,7 +99,7 @@ class GocardlessTransactionImporter (TransactionImporter):
 
 class PaypalTransactionImporter (TransactionImporter):
     SOURCE = PaymentProvider.PAYPAL
-    HEADER = '"Date","Time","Time zone","Name","Type","Status","Currency","Gross","Fee","Net","From Email Address","To Email Address","Transaction ID","Counterparty Status","Shipping Address","Address Status","Option 1 Name","Reference Txn ID","Quantity","Receipt ID","Country","Contact Phone Number","Subject","Balance Impact","Buyer Wallet"\n'
+    HEADER = '"Date","Time","Time zone","Name","Type","Status","Currency","Gross","Fee","Net","From Email Address","To Email Address","Transaction ID","Counterparty Status","Shipping Address","Address Status","Option 1 Name","Reference Txn ID","Quantity","Receipt ID","Country","Contact Phone Number","Subject","Balance Impact","Buyer Wallet"\n'  # noqa: E501
     CSVCONFIG = CsvConfig(
         delimiter=',',
         doublequote=True,
